@@ -7,6 +7,8 @@ import traceback
 from info import Info
 
 ###--------------------------------------------           Ventana Principal                 ------------------------------------------###
+def puto():
+    pass
 
 def pruebaMaster():
     pass
