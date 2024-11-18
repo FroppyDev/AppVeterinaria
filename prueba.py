@@ -8,7 +8,7 @@ from info import Info
 
 ###--------------------------------------------           Ventana Principal                 ------------------------------------------###
 
-def danielborrame():
+def pruebaMaster():
     pass
 
 class main_window(ctk.CTk):
