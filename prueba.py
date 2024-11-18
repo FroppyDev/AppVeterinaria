@@ -7,8 +7,11 @@ import traceback
 from info import Info
 
 ###--------------------------------------------           Ventana Principal                 ------------------------------------------###
+def puto():
+    pass
 
 def danielborrame():
+    #esto es una prueba rama daniel
     pass
 
 class main_window(ctk.CTk):
