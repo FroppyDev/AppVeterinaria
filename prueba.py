@@ -5,20 +5,26 @@ from registro import RegistroApp
 from bd import bd
 import traceback
 from info import Info
+from existente import Existente
+from confirmacion import VentanaConfirmacion
 
 ctk.set_appearance_mode("light")  # pa que se vea blanco viejon
 
-class main_window(ctk.CTk):
+class Main_window(ctk.CTk):
     base = bd()
     data = base.Obtener_info_lista()
     base.Cerrar()
 
     tam = len(data)
+    
+    def confirmacion(self):
+        app = Toplevel(ventana)
+        confirn = VentanaConfirmacion(app)
+        self.update()
 
     def abrir_registro(self):
         app = Toplevel(ventana)
         registro = RegistroApp(app)
-        registro.mainloop()
         self.update()
 
     def obtener_info_completa(self):
@@ -52,14 +58,13 @@ class main_window(ctk.CTk):
     def update(self):
         for pet_id, img_icon, nombre, mascota in self.lista_mascotas:
             imagen3 = "imagenes/" + img_icon
-            texto = nombre + "\n" + mascota
+            texto = "Dueño: " + nombre + "\n" + "Mascota: " + mascota
             image = Image.open(imagen3).resize((100, 100))
             photo = ImageTk.PhotoImage(image)
             self.create_pet_item(photo, texto, pet_id)
 
     def __init__(self):
         super().__init__()
-
         self.id = 0
         self.title("Selecciona tu Mascota")
         self.geometry("1080x720+400+60")
@@ -74,15 +79,16 @@ class main_window(ctk.CTk):
         self.menu_button.grid(row=0, column=0, padx=(20, 5), pady=10, sticky="nw")
         #**********************************************************************************************************
         
-        self.register_frame = ctk.CTkFrame(self, fg_color="lightblue")
-        self.register_frame.grid(row=2, column=0, columnspan=3, pady=10, sticky="nsew")
-        self.register_frame.grid_columnconfigure(0, weight=1)
+        #la barra azul de abajo
+        self.footer_frame = ctk.CTkFrame(self, fg_color="lightblue")
+        self.footer_frame.grid(row=2, column=0, columnspan=3, pady=10, sticky="nsew")
+        self.footer_frame.grid_columnconfigure(0, weight=1)#pa centrar esto
 
-        button_frame = ctk.CTkFrame(self.register_frame, fg_color="lightblue")
-        button_frame.grid(row=0, column=0, pady=10)
+        two_buttons_frame = ctk.CTkFrame(self.footer_frame, fg_color="lightblue")
+        two_buttons_frame.grid(row=0, column=0, pady=10)
 
         self.register_button = ctk.CTkButton(
-            button_frame, text=" Registrar ", 
+            two_buttons_frame, text="  Registrar ", 
             width=70, height=50, 
             fg_color="orange", 
             corner_radius=25, 
@@ -91,7 +97,7 @@ class main_window(ctk.CTk):
         self.register_button.grid(row=0, column=0, padx=5)
 
         self.boton_refresh = ctk.CTkButton(
-            button_frame, 
+            two_buttons_frame, 
             fg_color="orange", 
             text="Refrescar", 
             width=40, 
@@ -106,7 +112,7 @@ class main_window(ctk.CTk):
         self.menu_frame.grid(row=1, column=0, padx=20, pady=(0, 10), sticky="nw")
         self.menu_frame.grid_remove()
         
-        self.about_button = ctk.CTkButton(self.menu_frame, text="Nota Medica", command=self.show_about, width=200)
+        self.about_button = ctk.CTkButton(self.menu_frame, text="Nota Medica", command=self.confirmacion, width=200)
         self.about_button.pack(pady=5)
         
         self.about_button = ctk.CTkButton(self.menu_frame, text="Agendar Cita", command=self.show_about, width=200)
@@ -120,24 +126,25 @@ class main_window(ctk.CTk):
         
         self.logout_button = ctk.CTkButton(self.menu_frame, text="Cerrar sesión", command=self.popOut_cerrarsesion, width=200)
         self.logout_button.pack(pady=5)
+        
+        #********************************************************************************************************************************
 
         self.search_frame = ctk.CTkFrame(self, fg_color="white")
         self.search_frame.grid(row=0, column=1, columnspan=2, padx=20, pady=10, sticky="nsew")
         self.search_entry = ctk.CTkEntry(self.search_frame, placeholder_text="Buscar Dueño", width=300)
         self.search_entry.pack(padx=10, pady=5)
-        #********************************************************************************************************************************
         
-        # Frame con la barra desplazadora 
+        #*******************************todo el contenido de la lista de mascotas y barra desplazadora***********************************
         mascotas_frame_container = ctk.CTkFrame(self)
         mascotas_frame_container.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
         
         self.mascotas_canvas = Canvas(mascotas_frame_container, bg="white", highlightthickness=0)
         self.mascotas_scrollbar = Scrollbar(mascotas_frame_container, orient="vertical", command=self.mascotas_canvas.yview)
-        self.mascotas_inner_frame = ctk.CTkFrame(self.mascotas_canvas)
+        self.mascotas_dentro_frame = ctk.CTkFrame(self.mascotas_canvas, fg_color="white")
 
-        self.mascotas_inner_frame.bind("<Configure>", lambda e: self.mascotas_canvas.configure(scrollregion=self.mascotas_canvas.bbox("all")))
+        self.mascotas_dentro_frame.bind("<Configure>", lambda e: self.mascotas_canvas.configure(scrollregion=self.mascotas_canvas.bbox("all")))
         self.mascotas_canvas.create_window(
-            (0, 0), window=self.mascotas_inner_frame, anchor="nw", tags="inner_frame", width=mascotas_frame_container.winfo_width()
+            (0, 0), window=self.mascotas_dentro_frame, anchor="nw", tags="inner_frame", width=mascotas_frame_container.winfo_width()
         ) 
         self.mascotas_canvas.bind("<Configure>", lambda e: self.mascotas_canvas.itemconfig("inner_frame", width=e.width))
         self.mascotas_canvas.configure(yscrollcommand=self.mascotas_scrollbar.set)
@@ -147,6 +154,7 @@ class main_window(ctk.CTk):
 
         self.lista_mascotas = self.obtener_info_lista()
         self.update()
+        #********************************************************************************************************************************
 
         self.right_frame = ctk.CTkFrame(self, fg_color="#FFF8E1", width=300)
         self.right_frame.grid(row=1, column=2, padx=10, pady=0, sticky="nsew")
@@ -184,11 +192,12 @@ class main_window(ctk.CTk):
         self.full_info_button.pack(pady=(10, 10))
 
         self.lista_info_completa = self.obtener_info_completa()
-
+        
+    #crea la mascota y la pone en el frame de la lista
     def create_pet_item(self, image, text, pet_id):
-        pet_frame = ctk.CTkFrame(self.mascotas_inner_frame, fg_color=None)
-        pet_frame.grid(row=self.mascotas_inner_frame.grid_size()[1], column=0, padx=5, pady=15, sticky="ew")
-        self.mascotas_inner_frame.grid_columnconfigure(0, weight=1)
+        pet_frame = ctk.CTkFrame(self.mascotas_dentro_frame, fg_color=None)
+        pet_frame.grid(row=self.mascotas_dentro_frame.grid_size()[1], column=0, padx=5, pady=15, sticky="ew")
+        self.mascotas_dentro_frame.grid_columnconfigure(0, weight=1)
 
         pet_button = ctk.CTkButton(
             pet_frame, image=image, text="", width=100, height=100, fg_color=None, command=lambda img=image, txt=text, id=pet_id: self.display_pet_info(img, id)
@@ -221,9 +230,7 @@ class main_window(ctk.CTk):
     def show_full_info(self):
         ven = Toplevel(ventana)
         app = Info(ven, self.id)
-        app.mainloop()
         
-
     def toggle_menu(self):
         """Alternar visibilidad del menú desplegable.""" 
         if self.menu_frame.winfo_ismapped():
@@ -258,7 +265,7 @@ class main_window(ctk.CTk):
         )
         self.cerrar.pack(fill="x" ,padx=(10,10) , side="left")
         
-        #este es pa que nos e cierre
+        #este es pa que no se cierre
         self.no_cerrar = ctk.CTkButton(   
             self.popout, 
             text="No", 
@@ -284,5 +291,5 @@ class main_window(ctk.CTk):
     def no_close_session(self):
         self.popout.destroy()
         
-ventana = main_window()
+ventana = Main_window()
 ventana.mainloop()

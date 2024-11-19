@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 import pygame
 from bd import bd
 
-class RegistroApp:
+class RegistroApp():
 
     def __init__(self, root):
         self.root = root
