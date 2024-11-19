@@ -20,10 +20,6 @@ class NotaMedica():
         self.color1 = "#4d86ff"
         self.color2 = "#ff6d4d"
 
-        self.image = Image.open("imagenes/huella.png")
-        self.image = self.image.resize((220, 220))
-        self.photo1 = ImageTk.PhotoImage(self.image)
-
         self.nota()
 
     def nota(self):
@@ -54,30 +50,27 @@ class NotaMedica():
 
         #configuracion del leftFrame*********************************************************************************
         centerFrame = customtkinter.CTkFrame(self.leftFrame, corner_radius=10, fg_color="#efe4cb")
-        centerFrame.pack(expand=True, padx=50, pady=(0, 50))
+        centerFrame.pack(expand=True, padx=50, pady=(20, 20))
 
-        nameLabel = Label(centerFrame, text="Nombre del cuidador", font=(self.font, self.fontWidht))
-        nameLabel.pack(pady=(15,0))
+        nameLabel = Label(centerFrame, text="Nombre del cuidador", font=(self.font, self.fontWidht), bg="#efe4cb")
+        nameLabel.pack(pady=(30, 0))
         nameEntry = customtkinter.CTkEntry(centerFrame, placeholder_text="Introduzca el nombre del cuidador", width=350, height=50, corner_radius=20)
-        nameEntry.pack(pady=(15,15), padx= 50)
+        nameEntry.pack(pady=30, padx= 50)
 
-        petLabel = Label(centerFrame, text="Nombre de la mascota", font=(self.font, self.fontWidht))
+        petLabel = Label(centerFrame, text="Nombre de la mascota", font=(self.font, self.fontWidht), bg="#efe4cb")
         petLabel.pack()
         petEntry = customtkinter.CTkEntry(centerFrame, placeholder_text="Introduzca el nombre de la mascota", width=350, height=50, corner_radius=20)
-        petEntry.pack(pady=(15,15), padx= 50)
+        petEntry.pack(pady=30, padx= 50)
 
-        raceLabel = Label(centerFrame, text="Raza de la mascota", font=(self.font, self.fontWidht))
+        raceLabel = Label(centerFrame, text="Raza de la mascota", font=(self.font, self.fontWidht), bg="#efe4cb")
         raceLabel.pack()
         raceEntry = customtkinter.CTkEntry(centerFrame, placeholder_text="Introduzca la raza de la mascota", width=350, height=50, corner_radius=20)
-        raceEntry.pack(pady=(15,15), padx= 50)
+        raceEntry.pack(pady=30, padx= 50)
 
-        contactLabel = Label(centerFrame, text="Contacto del cuidador", font=(self.font, self.fontWidht))
+        contactLabel = Label(centerFrame, text="Contacto del cuidador", font=(self.font, self.fontWidht), bg="#efe4cb")
         contactLabel.pack()
         contactEntry = customtkinter.CTkEntry(centerFrame, placeholder_text="Introduzca un correo de contacto", width=350, height=50, corner_radius=20)
-        contactEntry.pack(pady=(15,70), padx= 50)
-
-        imageLabel = customtkinter.CTkButton(self.leftFrame, image=self.photo1, text="", bg_color="#efe4cb", corner_radius=50, fg_color="#f8f5e5", hover_color=None, hover=None)
-        imageLabel.place(x=125, y=500)
+        contactEntry.pack(pady=(30,30), padx= 50)
 
         #configuracion del leftFrame*********************************************************************************
 
@@ -91,17 +84,17 @@ class NotaMedica():
         self.rightFrame.rowconfigure(3, weight=1)
         self.rightFrame.rowconfigure(4, weight=1)
 
-        dateLabel = Label(self.rightFrame, text="Fecha de consulta", font=(self.font, self.fontWidht))
+        dateLabel = Label(self.rightFrame, text="Fecha de consulta", font=(self.font, self.fontWidht), bg="white")
         dateLabel.grid(column=0, row=0)
         dateEntry = customtkinter.CTkEntry(self.rightFrame, placeholder_text="dd/mm/aa", width=190, height=50, corner_radius=20)
         dateEntry.grid(column=0, row=1)
 
-        timeLabel = Label(self.rightFrame, text="Hora de consulta", font=(self.font, self.fontWidht))
+        timeLabel = Label(self.rightFrame, text="Hora de consulta", font=(self.font, self.fontWidht), bg="white")
         timeLabel.grid(column=1, row=0)
         timeEntry = customtkinter.CTkEntry(self.rightFrame, placeholder_text="Introduzca la hora", width=190, height=50, corner_radius=20)
         timeEntry.grid(column=1, row=1)
 
-        reasonLabel = Label(self.rightFrame, text="Motivo de la visita", font=(self.font, self.fontWidht))
+        reasonLabel = Label(self.rightFrame, text="Motivo de la visita", font=(self.font, self.fontWidht), bg="white")
         reasonLabel.grid(column=0, columnspan=2, row=2)
         reasonText = customtkinter.CTkTextbox(self.rightFrame, width=500, border_width=2, corner_radius=20)
         reasonText.grid(column=0, columnspan=2, row=3)

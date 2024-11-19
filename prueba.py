@@ -95,7 +95,7 @@ class main_window(ctk.CTk):
         
         # Barra de color azul en la parte inferior------------------------------------------------------------------------------------------------
         self.register_frame = ctk.CTkFrame(self, fg_color=self.color1, corner_radius=5)
-        self.register_frame.grid(row=2, column=1, columnspan=3, pady=(10,10), sticky="nsew", padx=20)
+        self.register_frame.grid(row=2, column=0, columnspan=3, pady=(10,10), sticky="nsew", padx=20)
 
         # Configurar el grid del frame para centrar el contenido
         self.register_frame.grid_columnconfigure(0, weight=1)
@@ -131,7 +131,7 @@ class main_window(ctk.CTk):
 
         # Frame del menu despegable de hamburguesa---------------------------------------------------------------------------------
         self.menu_frame = ctk.CTkFrame(self, fg_color="white")
-        self.menu_frame.grid(row=0, rowspan=3, column=0, sticky="nsew")
+        self.menu_frame.grid(row=0, rowspan=2, column=0, sticky="nsew")
         self.menu_frame.grid_remove()  # Comenzar oculto
         
         # botones aun sin funcionalidad del menu
