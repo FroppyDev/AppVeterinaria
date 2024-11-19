@@ -5,13 +5,10 @@ from registro import RegistroApp
 from bd import bd
 import traceback
 from info import Info
+ctk.set_appearance_mode("light")  # pa que se vea blanco viejon
+
 
 ###--------------------------------------------           Ventana Principal                 ------------------------------------------###
-
-def danielborrame():
-    #Esta es una prueba para la rama Kevin
-    pass
-
 class main_window(ctk.CTk):
     
     base = bd()
@@ -19,6 +16,8 @@ class main_window(ctk.CTk):
     base.Cerrar()
 
     tam = len(data)
+    color1 = "#4d86ff"
+    color2 = "#ff6d4d"   
 
     def abrir_registro(self):
         app = Toplevel(ventana)
@@ -80,19 +79,29 @@ class main_window(ctk.CTk):
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
 
+        # Barra de busqueda en la parte superior generalmente en el centro(la mejorare despues)
+        self.search_frame = ctk.CTkFrame(self, fg_color="white")
+        self.search_frame.grid(row=0, column=1, columnspan=2, padx=20, pady=10, sticky="nsew")
+        self.search_frame.columnconfigure(1, weight=1)
+
+
+        # una mejora que le agregue a la barra de busqueda para que este centrada y no abarque todo el ancho
+        self.search_entry = ctk.CTkEntry(self.search_frame, placeholder_text="Buscar Dueño", width=400, height=50)
+        self.search_entry.grid(row=0, column=1, padx=(0,70))
+        
         # Menu de hamburguesa en la esquina superior izquierda
-        self.menu_button = ctk.CTkButton(self, text="☰", command=self.toggle_menu, width=80, fg_color="lightgray", corner_radius=10)
+        self.menu_button = ctk.CTkButton(self.search_frame, text="☰", command=self.toggle_menu,  width=50, height=50, fg_color=self.color2)
         self.menu_button.grid(row=0, column=0, padx=(20, 5), pady=10, sticky="nw")
         
-        # Barra de color azul en la parte inferior
-        self.register_frame = ctk.CTkFrame(self, fg_color="lightblue")
-        self.register_frame.grid(row=2, column=0, columnspan=3, pady=10, sticky="nsew")
+        # Barra de color azul en la parte inferior------------------------------------------------------------------------------------------------
+        self.register_frame = ctk.CTkFrame(self, fg_color=self.color1, corner_radius=5)
+        self.register_frame.grid(row=2, column=1, columnspan=3, pady=(10,10), sticky="nsew", padx=20)
 
         # Configurar el grid del frame para centrar el contenido
         self.register_frame.grid_columnconfigure(0, weight=1)
 
         # Frame que contendrá los botones, centrado en la barra azul
-        button_frame = ctk.CTkFrame(self.register_frame, fg_color="lightblue")
+        button_frame = ctk.CTkFrame(self.register_frame, fg_color=self.color1)
         button_frame.grid(row=0, column=0, pady=10)
 
         # Botón "Registrar"
@@ -101,8 +110,8 @@ class main_window(ctk.CTk):
             text="  Registrar ",
             width=70,
             height=50,
-            fg_color="orange",
-            corner_radius=25,
+            fg_color=self.color2,
+            corner_radius=10,
             command=lambda: self.abrir_registro()
         )
         self.register_button.grid(row=0, column=0, padx=5)  # Pequeño espacio a la izquierda y derecha
@@ -110,24 +119,24 @@ class main_window(ctk.CTk):
         # Botón "Refrescar"
         self.boton_refresh = ctk.CTkButton(
             button_frame,
-            fg_color="orange",
+            fg_color=self.color2,
             text="Refrescar",
             width=40,
             height=50,
-            corner_radius=25,
+            corner_radius=10,
             command=lambda: self.updateOne()
         )
         self.boton_refresh.grid(row=0, column=1, padx=5)  # Pequeño espacio a la izquierda y derecha
 
 
-        # Frame del menu despegable de hamburguesa
+        # Frame del menu despegable de hamburguesa---------------------------------------------------------------------------------
         self.menu_frame = ctk.CTkFrame(self, fg_color="white")
-        self.menu_frame.grid(row=1, column=0, padx=20, pady=(0, 10), sticky="nw")
+        self.menu_frame.grid(row=0, rowspan=3, column=0, sticky="nsew")
         self.menu_frame.grid_remove()  # Comenzar oculto
         
         # botones aun sin funcionalidad del menu
         self.about_button = ctk.CTkButton(self.menu_frame, text="Sobre nosotros", command=self.show_about, width=200)
-        self.about_button.pack(pady=5)
+        self.about_button.pack(pady=5, padx=10)
 
         self.help_button = ctk.CTkButton(self.menu_frame, text="Ayuda", command=self.show_help, width=200)
         self.help_button.pack(pady=5)
@@ -136,14 +145,6 @@ class main_window(ctk.CTk):
         self.logout_button = ctk.CTkButton(self.menu_frame, text="Cerrar sesión", command=self.popOut_cerrarsesion, width=200)
         self.logout_button.pack(pady=5)
 
-        # Barra de busqueda en la parte superior generalmente en el centro(la mejorare despues)
-        self.search_frame = ctk.CTkFrame(self, fg_color="white")
-        self.search_frame.grid(row=0, column=1, columnspan=2, padx=20, pady=10, sticky="nsew")
-
-        # una mejora que le agregue a la barra de busqueda para que este centrada y no abarque todo el ancho
-        self.search_entry = ctk.CTkEntry(self.search_frame, placeholder_text="Buscar Dueño", width=300)
-        self.search_entry.pack(padx=10, pady=5)
-        
         #frame mascotas
         self.mascotas_frame = ctk.CTkFrame(self, width=300)
         self.mascotas_frame.grid(row = 1, column = 1, padx=0, pady = 0 ,sticky ="nsew")
@@ -263,10 +264,8 @@ class main_window(ctk.CTk):
         """Alternar visibilidad del menú desplegable.""" 
         if self.menu_frame.winfo_ismapped():
             self.menu_frame.grid_remove()
-            self.grid_columnconfigure(0, weight=0)
         else:
             self.menu_frame.grid()
-            self.grid_columnconfigure(0, weight=0)
             
     #el pop out para cerrar la sessin, ya es funcional solo falta un poco mas de dise;o, 
     def popOut_cerrarsesion(self):

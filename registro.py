@@ -6,6 +6,7 @@ import customtkinter
 from PIL import Image, ImageTk
 import pygame
 from bd import bd
+customtkinter.set_appearance_mode("light")  # pa que se vea blanco viejon
 
 class RegistroApp:
 

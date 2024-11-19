@@ -3,6 +3,8 @@ import customtkinter
 from PIL import Image, ImageTk
 from bd import bd
 import qrcode
+customtkinter.set_appearance_mode("light")  # pa que se vea blanco viejon
+
 
 class Info():
 
@@ -147,5 +149,5 @@ class Info():
 
 if __name__ == "__main__":
     root = Tk()
-    app = Info(root)
+    app = Info(root, 1)
     root.mainloop()        
