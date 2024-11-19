@@ -10,11 +10,12 @@ class VentanaConfirmacion():
         self.root.geometry("800x400+550+200")
         self.root.configure(bg="white")
 
-        self.top_bar = tk.Frame(self.root, bg="lightblue", height=50)
-        self.top_bar.grid(row = 0, column=1)
+        # Barra azul en la parte superior
+        self.top_bar = tk.Frame(self.root, bg="lightblue", height=30)
+        self.top_bar.pack(fill="x")
 
-        self.menu_button = tk.Button(self.top_bar, text="⬅️ Regresar", bg="orange", fg="white", borderwidth=0, font=("Arial", 18), command=self.back_window)
-        self.menu_button.pack(side="left", padx=10, pady=5)
+        self.regresar_boton = tk.Button(self.top_bar, text="⬅️ Regresar", bg="orange", fg="white", borderwidth=0, font=("Arial", 18), command=self.back_window)
+        self.regresar_boton.pack(side="left", padx=10, pady=5)
 
         self.main_frame = tk.Frame(self.root, bg="white")
         self.main_frame.pack(expand=True, fill="both")
