@@ -10,7 +10,14 @@ from confirmacion import VentanaConfirmacion
 
 ctk.set_appearance_mode("light")  # pa que se vea blanco viejon
 
+
 class Main_window(ctk.CTk):
+
+def pruebaMaster():
+    pass
+
+class main_window(ctk.CTk):
+    
     base = bd()
     data = base.Obtener_info_lista()
     base.Cerrar()
